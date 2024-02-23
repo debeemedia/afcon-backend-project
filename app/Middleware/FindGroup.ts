@@ -9,8 +9,17 @@ export default class FindGroup {
     if (!id) {
         return response.badRequest({message: 'Group Id not provided'})
     }
-    const group: Group = await Group.findOrFail(id)
-    if (!group) {
+    
+    // const group: Group = await Group.findOrFail(id)
+    // if (!group) {
+    //     return response.notFound({message: 'Unknown group was requested'})
+    // }
+
+    let group: Group
+    try {
+      group = await Group.findOrFail(id)
+      
+    } catch (error) {
         return response.notFound({message: 'Unknown group was requested'})
     }
 
