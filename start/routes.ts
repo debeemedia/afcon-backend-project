@@ -29,3 +29,9 @@ Route.get('/health', async ({response}) => {
   const report = await HealthCheck.getReport()
   return report.healthy ? response.ok(report) : response.badRequest(report)
 })
+
+Route.resource('groups', 'GroupsController').apiOnly().middleware({
+  show: ['findGroup'],
+  update: ['findGroup'],
+  destroy: ['findGroup']
+})
