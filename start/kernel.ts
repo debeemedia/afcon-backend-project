@@ -41,6 +41,7 @@ Server.middleware.register([
 |
 */
 Server.middleware.registerNamed({
-  findGroup: () => import('App/Middleware/FindGroup') 
+  findGroup: () => import('App/Middleware/FindGroup'),
+  findTeam: () => import('App/Middleware/FindTeam') 
 
 })
