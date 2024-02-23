@@ -6,8 +6,7 @@ export default class TeamsController {
 
     public async index ({request, response}: HttpContextContract) {
         const {page, perPage} = request.qs()
-        const teams = await Team.query().select(['id', 'name']).paginate(page, perPage)
-        // const teams = await Team.query().select(['id', 'name'])
+        const teams = await Team.query().select(['id', 'country', 'nickname']).paginate(page, perPage)
         return response.ok({data: teams})
     }
 
