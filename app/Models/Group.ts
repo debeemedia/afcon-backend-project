@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, beforeCreate, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
 import {cuid} from '@ioc:Adonis/Core/Helpers'
+import {string} from '@ioc:Adonis/Core/Helpers'
 
 
 export default class Group extends BaseModel {
@@ -24,10 +25,11 @@ export default class Group extends BaseModel {
     group.id = cuid()
   }
 
-  @beforeSave()
-  public static transformName (group: Group): void {
-    group.name = group.name.toUpperCase()
-    group.name = group.name.replace(/[-_]/g, ' ')
-  }
+  // @beforeSave()
+  // public static transformName (group: Group): void {
+  //   // group.name = group.name.toUpperCase()
+  //   // group.name = group.name.replace(/[-_]/g, ' ')
+  //   group.name = string.capitalCase(group.name)
+  // }
   
 }

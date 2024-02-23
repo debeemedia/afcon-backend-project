@@ -27,14 +27,20 @@ export default class GroupValidator {
     id: this.ctx.params?.id ?? null
   })
 
-
   public schema = schema.create({
-    name: schema.string([rules.escape(), rules.trim(), rules.maxLength(7), rules.unique({
-      table: 'groups',
-      column: 'name',
-      caseInsensitive: false,
-      whereNot: this.refs?.id ? {id: this.refs.id} : {}
-    })])
+    name: schema.enum(
+      ['Group A', 'Group B', 'Group C', 'Group D', 'Group E', 'Group F'],
+      [
+        rules.unique({
+          table: 'groups',
+          column: 'name',
+          caseInsensitive: false,
+          whereNot: this.refs?.id ? {id: this.refs.id} : {}
+        }),
+        rules.trim(),
+        rules.escape()
+      ]
+    )
   })
 
   /**
@@ -48,9 +54,10 @@ export default class GroupValidator {
    * }
    *
    */
+
   public messages: CustomMessages = {
     'name.required': 'Name is required',
-    'name.maxLength': 'Name should be a maximum of {{options.maxLength}} characters',
+    'name.enum': 'Name can only be one of {{options.choices}}',
     'name.unique': 'Name is already in your groups'
   }
 }

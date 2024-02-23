@@ -4,8 +4,7 @@ import Factory from '@ioc:Adonis/Lucid/Factory'
 const GroupFactory = Factory.define(Group, ({ faker }) => {
   return {
     //
-    name: faker.company.companyName()
-
+    name: faker.lorem.word(7)
   }
 }).build()
 
