@@ -81,14 +81,14 @@ test.group('Teams store', (group) => {
   })
   // .pin()
 
-  test('fail to create team without required fields', async ({route, client, assert}) => {
+  test('fail to create a team without required fields', async ({route, client, assert}) => {
     await Team.query().delete()
 
     const requiredFields = ['country', 'groupId']
     const payload = {}
 
     requiredFields.forEach(requiredField => {
-      payload['requiredField'] = ''
+      payload[requiredField] = ''
     })
 
     const response = await client.post(route('TeamsController.store'))
@@ -136,7 +136,7 @@ test.group('Teams store', (group) => {
   })
   // .pin()
 
-  test('fail to create a team with country character length greater than maxLength', async ({route, client, assert}) => {
+  test('fail to create a team with the country character length greater than maxLength', async ({route, client, assert}) => {
     await Team.query().delete()
     const payload = {
       country: string.generateRandom(26),
@@ -166,7 +166,7 @@ test.group('Teams store', (group) => {
   })
   // .pin()
 
-  test('fail to create a team with nickname character length greater than maxLength', async ({route, client, assert}) => {
+  test('fail to create a team with the nickname character length greater than maxLength', async ({route, client, assert}) => {
     await Team.query().delete()
     const payload = {
       country: string.generateRandom(25),
