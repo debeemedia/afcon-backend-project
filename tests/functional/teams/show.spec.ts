@@ -75,5 +75,5 @@ test.group('Teams show', (group) => {
     const fetchedGroup = await Group.findOrFail(group.id)
     assert.equal(responseBody.data.group.id, fetchedGroup.id)
   })
-  .pin()
+  // .pin()
 })
