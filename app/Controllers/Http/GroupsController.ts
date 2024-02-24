@@ -7,7 +7,9 @@ export default class GroupsController {
     public async index ({request, response}: HttpContextContract) {
         // const {page, perPage} = request.qs()
         // const groups = await Group.query().select(['id', 'name']).paginate(page, perPage)
+
         const groups = await Group.query().select(['id', 'name'])
+        // const groups = await Group.query().preload('teams', (query) => query.select('country', 'nickname')).select(['id', 'name'])
         return response.ok({data: groups})
     }
 

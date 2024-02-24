@@ -28,8 +28,22 @@ export default class TeamsController {
 
     public async update ({request, response, requestedTeam}: HttpContextContract) {
         const payload = await request.validate(TeamValidator)
+
+        // assign the team to another group if groupId changes
+        if ('groupId' in payload && payload.groupId !== requestedTeam?.groupId) {
+            const group = await Group.findOrFail(payload.groupId)
+            if (group) {
+                requestedTeam!.groupId = payload.groupId
+                await group.related('teams').save(requestedTeam!)
+            } else {
+                return response.badRequest({message: 'Invalid group Id provided'})
+            }
+        }
+
         requestedTeam?.merge(payload)
         await requestedTeam?.save()
+
+        await requestedTeam?.load('group', (query) => query.select('name'))
         return response.ok({message: 'Team was edited', data: requestedTeam})
     }
 
