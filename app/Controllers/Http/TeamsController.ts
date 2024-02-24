@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Group from 'App/Models/Group'
 import Team from 'App/Models/Team'
 import TeamValidator from 'App/Validators/TeamValidator'
 
@@ -6,19 +7,22 @@ export default class TeamsController {
 
     public async index ({request, response}: HttpContextContract) {
         const {page, perPage} = request.qs()
-        const teams = await Team.query().select(['id', 'country', 'nickname']).paginate(page, perPage)
+        const teams = await Team.query().preload('group', (query) => query.select('name')).select(['id', 'country', 'nickname', 'groupId']).paginate(page, perPage)
         return response.ok({data: teams})
     }
 
     public async store ({request, response}: HttpContextContract) {
         const payload = await request.validate(TeamValidator)
+        
+        let group = await Group.findOrFail(payload.groupId)
         const team = await Team.create(payload)
+        await group.related('teams').save(team)
 
-        // await team.refresh()
         return response.created(team)
     }
 
     public async show ({request, response, requestedTeam}: HttpContextContract) {
+        await requestedTeam?.load('group', (query) => query.select('name'))
         return response.ok({data: requestedTeam})
     }
 

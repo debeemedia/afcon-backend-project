@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, HasMany, beforeCreate, beforeSave, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import {cuid} from '@ioc:Adonis/Core/Helpers'
+import Team from 'App/Models/Team'
 import {string} from '@ioc:Adonis/Core/Helpers'
 
 
@@ -10,6 +11,9 @@ export default class Group extends BaseModel {
 
   @column({ isPrimary: true })
   public id: string
+
+  @hasMany(() => Team)
+  public teams: HasMany<typeof Team>
 
   @column()
   public name: string

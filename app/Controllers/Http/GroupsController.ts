@@ -20,6 +20,7 @@ export default class GroupsController {
     }
 
     public async show ({request, response, requestedGroup}: HttpContextContract) {
+        // await requestedGroup?.load('teams', (query) => query.select('country', 'nickname'))
         return response.ok({data: requestedGroup})
     }
 

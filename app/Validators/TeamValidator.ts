@@ -37,7 +37,9 @@ export default class TeamValidator {
       whereNot: this.refs?.id ? {id: this.refs.id} : {}
     })]),
 
-    nickname: schema.string.optional([rules.escape(), rules.trim(), rules.maxLength(30)])
+    nickname: schema.string.optional([rules.escape(), rules.trim(), rules.maxLength(30)]),
+
+    groupId: schema.string([rules.escape(), rules.trim()])
 
   })
 
@@ -56,6 +58,7 @@ export default class TeamValidator {
     'country.required': 'Country is required',
     'country.maxLength': 'Country should be a maximum of {{options.maxLength}} characters',
     'country.unique': 'Country is already in your teams',
-    'nickname.maxLength': 'Nickname should be a maximum of {{options.maxLength}} characters'
+    'nickname.maxLength': 'Nickname should be a maximum of {{options.maxLength}} characters',
+    'groupId.required': 'GroupId is required',
   }
 }

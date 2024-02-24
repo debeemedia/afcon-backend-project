@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, beforeCreate, beforeSave, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import {cuid} from '@ioc:Adonis/Core/Helpers'
+import Group from 'App/Models/Group'
 
 
 export default class Team extends BaseModel {
@@ -15,6 +16,12 @@ export default class Team extends BaseModel {
 
   @column()
   public nickname: string
+
+  @column({serializeAs: 'groupId'})
+  public groupId: string
+
+  @belongsTo(() => Group)
+  public group: BelongsTo<typeof Group>
 
   @column.dateTime({ serializeAs: 'createdAt', autoCreate: true })
   public createdAt: DateTime
