@@ -4,7 +4,7 @@ import Factory from '@ioc:Adonis/Lucid/Factory'
 const TeamFactory = Factory.define(Team, ({ faker }) => {
   return {
     //
-    country: faker.address.country()
+    country: faker.unique(() => faker.address.country())
 
   }
 }).build()
