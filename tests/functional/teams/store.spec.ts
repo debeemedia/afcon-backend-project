@@ -64,7 +64,7 @@ test.group('Teams store', (group) => {
     })
 
     
-    // control test
+    // control group
     const controlGroup = await Group.create({
       name: 'Group B'
     })
