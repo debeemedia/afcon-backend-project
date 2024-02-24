@@ -38,5 +38,5 @@ test.group('Teams index', (group) => {
     assert.equal(responseBody.data.meta.total, total)
 
   })
-  .pin()
+  // .pin()
 })
