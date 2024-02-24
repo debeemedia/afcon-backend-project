@@ -44,20 +44,57 @@ test.group('Teams store', (group) => {
   })
   // .pin()
 
+  test('show that multiple teams belong to a group and are linked by foreign key', async ({client, assert, route}) => {
+    await Team.query().delete()
+    await Group.query().delete()
+
+    const group = await Group.create({
+      name: 'Group A'
+    })
+
+    await Team.create({
+      country: 'Nigeria',
+      nickname: 'Super Eagles',
+      groupId: group.id
+    })
+
+    await Team.create({
+      country: 'Equatorial Guinea',
+      groupId: group.id
+    })
+
+    
+    // control test
+    const controlGroup = await Group.create({
+      name: 'Group B'
+    })
+    await Team.create({
+      country: 'Ghana',
+      nickname: 'Black Stars',
+      groupId: controlGroup.id
+    })
+
+    const teamsBelongingToGroup = await Team.query().where('groupId', group.id)
+
+    assert.equal(teamsBelongingToGroup.length, 2)
+    assert.notEqual(teamsBelongingToGroup.length, 3)
+  })
+  // .pin()
+
   test('fail to create team without required fields', async ({route, client, assert}) => {
     await Team.query().delete()
 
     const requiredFields = ['country', 'groupId']
     const payload = {}
+
     requiredFields.forEach(requiredField => {
       payload['requiredField'] = ''
     })
 
     const response = await client.post(route('TeamsController.store'))
     .form(payload)
-    const responseBody = response.body()
 
-    response.dumpBody()
+    // response.dumpBody()
     response.assertStatus(422)
 
     const errorMessages = requiredFields.map(requiredField => {
