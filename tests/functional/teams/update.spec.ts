@@ -48,4 +48,33 @@ test.group('Teams update', (group) => {
     assert.equal(updatedTeam.country, responseBody.data.country)
   })
   // .pin()
+
+  test(`show that when a team's groupId is updated, the relationship between the team and the group changes to the new group`, async ({client, assert, route}) => {
+    await Team.query().delete()
+    await Group.query().delete()
+
+    const group1 = await GroupFactory.create()
+    const group2 = await GroupFactory.create()
+
+    const team = await Team.create({
+      country: 'Nigeria',
+      groupId: group1.id
+    })
+
+    await client.put(route('TeamsController.update', {id: team.id}))
+    .form({
+      ...team,
+      groupId: group2.id
+    })
+
+    // console.log(group1.id);
+    // console.log(group2.id);
+    // response.dumpBody()
+
+    const fetchedTeam = await Team.findByOrFail('groupId', group2.id)
+    assert.exists(fetchedTeam)
+
+  })
+  // .pin()
+
 })
